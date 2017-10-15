@@ -53,7 +53,7 @@ int popStack(result *top){
 result *getStackTop(result *top){
     
     if (top->next) {
-        return top;
+        return top->next;
     }else
         return NULL;
 }
@@ -85,9 +85,9 @@ int choice(result *top,direction *unit){
         unit->now = 3;
         pushStack(top, unit);
     }else{
-        printf("**");
-        popStack(top);
+        unit->now = 1;
         now = getStackTop(top);
+        popStack(top);
         return now->way;
     }
     return 8;
@@ -121,22 +121,22 @@ int main(int argc, const char * argv[]) {
     }
     i=1,j=1;
     while (!(i==row && j==column)) {
-        if (j+1<=column&&map[i][j+1].now!=3&&!map[i][j].east) {
+        if (j+1<=column) {
             map[i][j].east = map[i][j+1].now;
         }else{
             map[i][j].east = 1;
         }
-        if (i+1<=row&&map[i+1][j].now!=3&&!map[i][j].south) {
+        if (i+1<=row) {
             map[i][j].south = map[i+1][j].now;
         }else{
             map[i][j].south = 1;
         }
-        if (j-1>=1&&map[i][j-1].now!=3&&!map[i][j].west) {
+        if (j-1>=1) {
             map[i][j].west = map[i][j-1].now;
         }else{
             map[i][j].west = 1;
         }
-        if (i-1>=1&&map[i-1][j].now!=3&&!map[i][j].north) {
+        if (i-1>=1) {
             map[i][j].north = map[i-1][j].now;
         }else{
             map[i][j].north = 1;
@@ -164,18 +164,20 @@ int main(int argc, const char * argv[]) {
                     }
                     break;
                 case 1:
-                    map[i][j].east = 1;
+                    j = j-1;
+                    map[i][j].y = j;
                     break;
                 case 2:
-                    map[i][j].south = 1;
+                    i = i-1;
+                    map[i][j].x = i;
                     break;
                 case 3:
-                    map[i][j].west = 1;
+                    j = j+1;
+                    map[i][j].y = j;
                     break;
                 case 4:
-                    map[i][j].north = 1;
-                    break;
-                default:
+                    i = i+1;
+                    map[i][j].x = i;
                     break;
             }
         }//完成搜索
